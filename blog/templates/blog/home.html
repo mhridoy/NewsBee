@@ -1,0 +1,44 @@
+{% extends 'blog/base.html'%}
+{% load static %}
+{% block content %} 
+    <div class = "container">
+      <br>
+      <h2 class = "text-center">News</h2> 
+      <br>
+      <form method="GET">
+        <input type = "text" name = "name" placeholder="Search..." class = "text-center">
+        <button type = "submit" class = "btn-danger btn-sm">Search News</button>
+      </form> 
+    </div>  
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'blog/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="col-sm-10">
+    <h3 class="text-white my-5"></h3>
+{% for posts in posts %}
+
+    <div class="card jumbo-color" style="width: 18rem;">
+        <img class="card-img-top " src="https://picsum.photos/seed/picsum/1000/800" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title font-weight-bold">N{{posts.title}} </h5>
+          <p class="card-text ">{{posts.desc}}</p>
+          <a href="#" class="btn btn-primary">See more</a>
+        </div>
+      </div>
+{% endfor %}
+</div>
+
+{% endblock content %} {% endcomment %}
