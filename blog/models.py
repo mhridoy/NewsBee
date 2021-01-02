@@ -6,12 +6,12 @@ class Post(models.Model):
     desc = models.TextField()
     #photo = models.ImageField(upload_to='news')
 class Home(models.Model):
-    title = models.CharField(max_length=50, blank = True, null = True)
-    category = models.CharField(max_length=10, blank = True, null = True)
-    desc = models.CharField(max_length=4000, blank = True, null = True)
+    title = models.TextField(max_length=50, blank = True, null = True)
+    category = models.TextField(max_length=50, blank = True, null = True)
+    desc = models.TextField(max_length=4000, blank = True, null = True)
     country = models.CharField(max_length=20, blank = True, null = True)
     slug = models.SlugField(default = 'test')
-    image_url = models.CharField( max_length=50, blank = True, null = True)
+    image_url = models.TextField( max_length=50, blank = True, null = True)
 
     def __str__(self):
         return self.name

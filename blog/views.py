@@ -15,15 +15,36 @@ def home(request):
         # # print(r.json())
         # res=r.json()
         # data = res
-        # id = request.user.id
-        #uc = request.user.user_country
+        id = request.user.id
+        usercountry = UserCountry.objects.filter(user__id=3)
+        # if len(usercountry) ==1:
+        print("No record!")
+        uc = usercountry[0].country
+        url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&countries='+uc
+        r = requests.get(url=url)
+        print(r.json())
+        res=r.json()
+        datas = res['data']
+
+        for i in datas:
+            news_data = Home(
+                title= i['title'],
+                category=i['category'],
+                desc=i['description'],
+                image_url=i['image'],
+
+            )
+            news_data.save()
+            all_data= Home.objects.all()
+        # else:
+        print("")
         print("**********************************")
         #print(uc)
         # response =response['country']
         #for i in range(len(res['title'])):
         #    response.append(res['title'][i])
 
-        return render (request,'blog/home.html')
+        return render (request,'blog/home.html',{'all_data':all_data})
     else:
         return redirect('/login/')
 def about(request):
