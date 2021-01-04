@@ -11,7 +11,7 @@ class UserCountryAdmin(admin.ModelAdmin):
 @admin.register(Home)
 class HomeAdmin(admin.ModelAdmin):
     list_display = ['title','category','desc',
-    'country','url','image_url'
+    'country','url','image'
     ]
 @admin.register(SaveCountry)
 class SaveCountry(admin.ModelAdmin):

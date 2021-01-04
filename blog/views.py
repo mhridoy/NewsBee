@@ -21,7 +21,7 @@ def home(request):
 
             id = request.user.id 
            
-            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&keywords='+name
+            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&offset=0&limit=100&keywords='+name
             r = requests.get(url=url)
                 #print(r.json())
             res=r.json()
@@ -58,12 +58,12 @@ def home(request):
 
         else:
             id = request.user.id
-            
+            Home.objects.all().delete()
             usercountry = UserCountry.objects.filter(user__id=id)
                 # if len(usercountry) ==1:
                 #print("No record!")
             uc = usercountry[0].country
-            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&countries='+uc
+            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&offset=0&limit=100&countries='+uc
             r = requests.get(url=url)
                 #print(r.json())
             res=r.json()
@@ -73,7 +73,7 @@ def home(request):
                 if i['image'] is None:
                     continue
                 else:
-                    collection.append(i)
+                    #collection.append(i)
                     # collection= collection +i['category']
                     # collection= collection +i['description']
                     # collection= collection +i['image']
@@ -82,24 +82,22 @@ def home(request):
                     # collection= collection +i['url']
                     # collection= collection +i['description']
                     # collection= collection +i['image']
-        
-                    
                     news_data = Home(
                     title= i['title'],
                     category=i['category'],
                     desc=i['description'],
-                    image_url=i['image'],
+                    image=i['image'],
                     url = i['url'],
                     country=i['country'],
-
+                    published_at = i['published_at'],
                     )
                 
 
-            #news_data.save()
-            #all_data= Home.objects.all()
-            print("===================================")
-            print(collection)
-            all_data=collection
+                    news_data.save()
+            all_data= Home.objects.all()
+            #print("===================================")
+            #print(collection)
+            #all_data=collection
                 # else:
             # print("")
             # print("**********************************")
@@ -182,7 +180,7 @@ def add_post(request):
                 title = form.cleaned_data['title']
                 desc = form.cleaned_data['desc']
                 pst = Post(title=title,desc=desc)
-                messages.success(request,'Add Post Successfully')
+                messages.success(request,'Add News Successfully')
                 pst.save()
                 form = PostForm()
 
@@ -223,7 +221,7 @@ def delete_post(request,id):
         return redirect('/login/')
 
 def generate_country_list(request):
-    url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b'
+    url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&offset=0&limit=100'
     r = requests.get(url=url)
                 #print(r.json())
     res=r.json()

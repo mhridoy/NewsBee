@@ -12,7 +12,8 @@ class Home(models.Model):
     country = models.TextField(max_length=20, blank = True, null = True)
     url = models.URLField(max_length=200, blank = True, null = True)
     
-    image_url = models.URLField(max_length = 200,blank= True,null=True)
+    image = models.URLField(max_length = 1000,blank= True,null=True)
+    published_at = models.TextField(max_length=200, blank=True,null=True)
 
    
 
@@ -23,3 +24,8 @@ class UserCountry(models.Model):
 
 class SaveCountry(models.Model):
         s_count = models.TextField(max_length=2,unique=True) 
+
+
+class Share(models.Model):
+    title = models.TextField(max_length=200,unique=True)
+    desc  = models.TextField(max_length=2000,unique=True)  

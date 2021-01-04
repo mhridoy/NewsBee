@@ -15,20 +15,25 @@
     <div class="row no-gutters">
     {% for data in all_data %}
     <div class="card container-fluid bg-dark" style="width: 18rem;" >
-  <img class="card-img-top" src="{{ data.image}}" alt="Card image cap">
+  <img class="card-img-top" src="{{data.image}}" alt="Card image cap">
   <div class="card-body">
     <h5 class="card-title container-fluid bg-dark">{{ data.title }}</h5>
-    <p class="card-text">{{data.desc}}</p>
+    <p class="card-text">{{data.desc|truncatechars:100}}</p>
   </div>
   <ul class="list-group list-group-flush container-fluid bg-dark">
     <li class="list-group-item container-fluid bg-dark">Category : {{data.category}}</li>
     <li class="list-group-item container-fluid bg-dark">Country : {{data.country}}</li>
     <li class="list-group-item container-fluid bg-dark">Publish at: {{data.published_at}} ;</li>
   </ul>
+    
   <div class="card-body container-fluid bg-dark">
-     <input type="submit" value="Share" class="btn btn-primary" href="#" class="card-link">
+{% comment %} 
+     <input type="submit" value="Share" class="btn btn-primary"class="card-link">
+     <a  href="addpost"> {% endcomment %}
+     <a class="submit btn btn-primary" href="addpost">Share</a>
      <p></p>
-    <a href="{{data.url}}" class="card-link">See more</a>
+    
+    <a href="{{data.url}}" class="card-link">Read more</a>
   </div>
 </div>
 <br>
