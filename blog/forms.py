@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,Userna
 
 from django.contrib.auth.models import User
 from django.utils.translation import gettext, gettext_lazy as _
-from .models import Post
+from .models import Post,Home
 
 class SignupForm(UserCreationForm):
     password1 = forms.CharField(label='Password',widget=forms.PasswordInput(attrs={'class':'form-control'}))
@@ -31,7 +31,7 @@ class LoginForm(AuthenticationForm):
 
 class PostForm(forms.ModelForm):
     class Meta:
-        model = Post
+        model = Home
         fields= ['title','desc']
         labels = {'title':'Title','desc':'Description'}
         widgets = {

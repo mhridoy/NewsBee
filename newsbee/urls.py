@@ -25,6 +25,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard,name='dashboard'),
     path('logout/', views.user_logout,name='logout'),
     path('addpost/', views.add_post,name='addpost'),
+    path('country/', views.generate_country_list,name='country_list'),
     path('updatepost/<int:id>/', views.update_post,name='updatepost'),
     path('delete/<int:id>/', views.delete_post,name='deletepost'),
     

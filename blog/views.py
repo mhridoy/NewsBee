@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,HttpResponseRedirect
 from .forms import SignupForm, LoginForm, PostForm
 from django.contrib import  messages
 from django.contrib.auth import authenticate,login,logout
-from .models import Post,Home,UserCountry
+from .models import Post,Home,UserCountry,SaveCountry
 from django.contrib.auth.models import Group
 import requests
 # Home
@@ -15,36 +15,77 @@ def home(request):
         # # print(r.json())
         # res=r.json()
         # data = res
-        id = request.user.id
-        usercountry = UserCountry.objects.filter(user__id=3)
-        # if len(usercountry) ==1:
-        print("No record!")
-        uc = usercountry[0].country
-        url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&countries='+uc
-        r = requests.get(url=url)
-        print(r.json())
-        res=r.json()
-        datas = res['data']
 
-        for i in datas:
-            news_data = Home(
+        if 'name' in request.GET:
+            name=request.GET['name']
+
+            id = request.user.id 
+           
+            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&keywords='+name
+            r = requests.get(url=url)
+                #print(r.json())
+            res=r.json()
+            datas = res['data']
+
+            for i in datas:
+                news_data = Home(
                 title= i['title'],
                 category=i['category'],
                 desc=i['description'],
                 image_url=i['image'],
+                url = i['url'],
+                country=i['url'],
 
-            )
-            news_data.save()
-            all_data= Home.objects.all()
-        # else:
-        print("")
-        print("**********************************")
-        #print(uc)
-        # response =response['country']
-        #for i in range(len(res['title'])):
-        #    response.append(res['title'][i])
 
-        return render (request,'blog/home.html',{'all_data':all_data})
+                )
+            #news_data.save()
+            #all_data= Home.objects.all()
+            all_data=datas
+                # else:
+            # print("")
+            # print("**********************************")
+                #print(uc)
+                # response =response['country']
+                #for i in range(len(res['title'])):
+                #    response.append(res['title'][i])
+
+            return render (request,'blog/home.html',{'all_data':all_data})
+
+        else:
+            id = request.user.id
+            
+            usercountry = UserCountry.objects.filter(user__id=id)
+                # if len(usercountry) ==1:
+                #print("No record!")
+            uc = usercountry[0].country
+            url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b&language=en&countries='+uc
+            r = requests.get(url=url)
+                #print(r.json())
+            res=r.json()
+            datas = res['data']
+
+            for i in datas:
+                news_data = Home(
+                title= i['title'],
+                category=i['category'],
+                desc=i['description'],
+                image_url=i['image'],
+                url = i['url'],
+                country=i['url'],
+
+                )
+            #news_data.save()
+            #all_data= Home.objects.all()
+            all_data=datas
+                # else:
+            # print("")
+            # print("**********************************")
+                #print(uc)
+                # response =response['country']
+                #for i in range(len(res['title'])):
+                #    response.append(res['title'][i])
+
+            return render (request,'blog/home.html',{'all_data':all_data})
     else:
         return redirect('/login/')
 def about(request):
@@ -54,7 +95,7 @@ def about(request):
 #Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
-        posts = Post.objects.all()
+        posts = Home.objects.all()
         user = request.user
         full_name= user.get_full_name()
         gps = user.groups.all()
@@ -68,6 +109,7 @@ def user_logout(request):
     return redirect('/')
 #Signup
 def user_signup(request):
+    posts = SaveCountry.objects.all()
     if request.method == "POST":
         form = SignupForm(request.POST)
         country = request.POST['country']
@@ -80,10 +122,13 @@ def user_signup(request):
             user_country.country = country
             user_country.user = user
             user_country.save()
+            
+            return redirect('/login/')
             # UserCountry.objects.get(user__id=3).country
     else:
         form = SignupForm()
-    return render(request,'blog/signup.html',{'form':form})
+        
+    return render(request,'blog/signup.html',{'form':form,'posts':posts})
 
 #Login
 def user_login(request):
@@ -130,13 +175,13 @@ def add_post(request):
 def update_post(request,id):
     if request.user.is_authenticated:
         if request.method =='POST':
-            pi = Post.objects.get(pk=id)
+            pi = Home.objects.get(pk=id)
             form = PostForm(request.POST,instance=pi)
             if form.is_valid():
                 messages.success(request,'Update Post Successfully')
                 form.save()
         else:
-            pi = Post.objects.get(pk=id)
+            pi = Home.objects.get(pk=id)
             form = PostForm(instance=pi)        
         return render(request,'blog/updatepost.html',{'form':form})
     else:
@@ -153,3 +198,17 @@ def delete_post(request,id):
         return redirect('/dashboard/')
     else:
         return redirect('/login/')
+
+def generate_country_list(request):
+    url = 'http://api.mediastack.com/v1/news?access_key=5b7237da6ecd7b298ec9aefc51acb02b'
+    r = requests.get(url=url)
+                #print(r.json())
+    res=r.json()
+    datas = res['data']
+    for i in datas:
+        news_data = SaveCountry(
+        s_count= i['country']
+                )
+        news_data.save()
+    all_contries = SaveCountry.objects.all()
+    return render(request,{"Save Country"})
