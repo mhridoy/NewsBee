@@ -7,13 +7,33 @@
       <h2 class = "text-center">Search for your favorite News</h2> 
       <br>
       <form method="GET">
-        <input type = "text" name = "name" placeholder="Virus or Corona" class = "text-center">
+        <input type = "text" name = "name" placeholder="Virus or Corona or etc" class = "text-center">
         <button type = "submit" class = "btn-danger btn-sm">SEARCH NEWS</button>
       </form> 
     </div> 
     <br><br>
     <div class="row no-gutters">
-      {% for data in all_data %}
+    {% for data in all_data %}
+    <div class="card container-fluid bg-dark" style="width: 18rem;" >
+  <img class="card-img-top" src="{{ data.image}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title container-fluid bg-dark">{{ data.title }}</h5>
+    <p class="card-text">{{data.desc}}</p>
+  </div>
+  <ul class="list-group list-group-flush container-fluid bg-dark">
+    <li class="list-group-item container-fluid bg-dark">Category : {{data.category}}</li>
+    <li class="list-group-item container-fluid bg-dark">Country : {{data.country}}</li>
+    <li class="list-group-item container-fluid bg-dark">Publish at: {{data.published_at}} ;</li>
+  </ul>
+  <div class="card-body container-fluid bg-dark">
+     <input type="submit" value="Share" class="btn btn-primary" href="#" class="card-link">
+     <p></p>
+    <a href="{{data.url}}" class="card-link">See more</a>
+  </div>
+</div>
+<br>
+ {% endfor %}
+      {% comment %} {% for data in all_data %}
         <div  class="col-md-4 col-lg-3 container-fluid bg-dark">
           <div class="card">
             <img class="card-img-top" src="{{ data.image_url }}" alt="Card image cap">
@@ -31,7 +51,7 @@
           </div>
           <br><br><br>
         </div>
-      {% endfor %}
+      {% endfor %} {% endcomment %}
     </div>
   </div>
 {% endblock %}

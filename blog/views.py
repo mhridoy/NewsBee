@@ -26,21 +26,26 @@ def home(request):
                 #print(r.json())
             res=r.json()
             datas = res['data']
-
+            collection=[]
             for i in datas:
-                news_data = Home(
-                title= i['title'],
-                category=i['category'],
-                desc=i['description'],
-                image_url=i['image'],
-                url = i['url'],
-                country=i['url'],
+                if i['image'] is None:
+                    continue
+                else:
+                    collection.append(i)
+            # for i in datas:
+            #     news_data = Home(
+            #     title= i['title'],
+            #     category=i['category'],
+            #     desc=i['description'],
+            #     image_url=i['image'],
+            #     url = i['url'],
+            #     country=i['url'],
 
 
-                )
+            #     )
             #news_data.save()
             #all_data= Home.objects.all()
-            all_data=datas
+            all_data=collection
                 # else:
             # print("")
             # print("**********************************")
@@ -63,20 +68,38 @@ def home(request):
                 #print(r.json())
             res=r.json()
             datas = res['data']
-
+            collection=[]
             for i in datas:
-                news_data = Home(
-                title= i['title'],
-                category=i['category'],
-                desc=i['description'],
-                image_url=i['image'],
-                url = i['url'],
-                country=i['url'],
+                if i['image'] is None:
+                    continue
+                else:
+                    collection.append(i)
+                    # collection= collection +i['category']
+                    # collection= collection +i['description']
+                    # collection= collection +i['image']
+                    # collection= collection +i['published_at']
+                    # collection= collection +i['country']
+                    # collection= collection +i['url']
+                    # collection= collection +i['description']
+                    # collection= collection +i['image']
+        
+                    
+                    news_data = Home(
+                    title= i['title'],
+                    category=i['category'],
+                    desc=i['description'],
+                    image_url=i['image'],
+                    url = i['url'],
+                    country=i['country'],
 
-                )
+                    )
+                
+
             #news_data.save()
             #all_data= Home.objects.all()
-            all_data=datas
+            print("===================================")
+            print(collection)
+            all_data=collection
                 # else:
             # print("")
             # print("**********************************")
@@ -211,4 +234,4 @@ def generate_country_list(request):
                 )
         news_data.save()
     all_contries = SaveCountry.objects.all()
-    return render(request,{"Save Country"})
+    return None
