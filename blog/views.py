@@ -199,7 +199,7 @@ def update_post(request,id):
             pi = Home.objects.get(pk=id)
             form = PostForm(request.POST,instance=pi)
             if form.is_valid():
-                messages.success(request,'Update Post Successfully')
+                messages.success(request,'Update News Successfully')
                 form.save()
         else:
             pi = Home.objects.get(pk=id)
