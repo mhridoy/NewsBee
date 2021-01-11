@@ -3,3 +3,5 @@
 
 # Home Page
 ![Home Page](NewsBee.PNG)
+# My Collections
+![MyCollections](MyCollections.PNG)
